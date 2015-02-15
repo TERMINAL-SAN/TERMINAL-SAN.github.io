@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type"
+                content="text/html; charset=iso-2022-jp">
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta http-equiv="Content-Script-Type" content="text/javascript" />
+        <link rel="stylesheet" href="style.css" type="text/css" media="screen,print" />
+        <script type="text/javascript" src="jquery-1.6.min.js"></script>
+
+        <title>b1012205</title>
+    </head>
+    
+    <style type="text/css">
+        </style>
+    
+    <body background="" bgcolor="black">
+        
+        <center>
+            <br/>
+            <A Href="http://b1012205.github.io"><img src="hayatoバナー.jpg" style="max-width: 85%;
+                height:auto;
+                border-radius: 20px;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                " alt="hayatoバナー"></A>
+            <br/>
+            
+            <Marquee><font color="white" style="font-family:Century;">初めに、HAYATOがあった。HAYATOは神とともにあった。HAYATOは神であった。この方は、初めに神とともにおられた。</font></Marquee>
+           </center>
+</br>
+<center>
+    <div style="height:12px;"><span style="margin-left:8px; padding:6px 10px; background:firebrick; color:white; border-radius:5px; border:inset">† 新着情報 †</span></div><div style="border:2px solid #000066; padding:25px 12px 10px; font-size:1em;border-radius:5px; width: 70%; background:white; border:inset" align="left">
+
+<!--新着情報-->
+<span style="font-size:60%">［2014/10/17(金) 16:51］</span></br>
+　鍛錬所に「萌えと根性のCSS」が追加されました。
+
+
+</br><HR align="100%" size="1">
+
+
+<span style="font-size:60%">［2014/09/29(月) 23:42］</span></br>
+　国分寺ハヤトの日常を更新しました。
+
+
+</br><HR align="100%" size="1">
+
+<span style="font-size:60%">［2014/09/26(月) 17:05］</span></br>
+　AISデコーダーがClassBに対応しました。
+
+
+</br><HR align="100%" size="1">
+
+<span style="font-size:60%">［2014/09/22(月) 00:28］</span></br>
+　新着情報を追加しました。
+
+</br><HR align="100%" size="1">
+
+<span style="font-size:60%">［2014/09/21(日) 23:40］</span></br>
+　石川寝ました。
+
+    
+    </div>
+</center>
+
+<center>
+<div id="container">
+    <ul class="navi">
+        <li>
+            <div class="category">鍛錬所</div>
+            <ul class="menu">
+                <li><a href="./cal/cal.html">スケジュール</a></li>
+                <li><a href="Decoder.html">AISデコーダー</a></li>
+                <li><a href="./mio/mio.html">萌えと根性のCSS</a></li>
+                <li><a href="exchange.html">パチンカス御用達</a></li>
+                <li><a href="./yaju/sound.html">淫夢プレイヤー</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="category">HAYATOの部屋</div>
+            <ul class="menu">
+                <li><a href="./blog/blogtop.html">国分寺ハヤトの日常</a></li>
+                <li><a href="./gest.js-master/demos/slidesjs">HAYATO様の肖像画展</a></li>
+                <li><a href="./music/sound.html">HAYATO様の甘い囁き</a></li>
+                <li><a href="#">HAYATO様の御言葉</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="category">hoge</div>
+            <ul class="menu">
+                <li><a href="#">hoge</a></li>
+                <li><a href="#">hoge</a></li>
+                <li><a href="#">hoge</a></li>
+                <li><a href="#">hoge</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="category">hoge</div>
+            <ul class="menu">
+                <li><a href="#">hoge</a></li>
+                <li><a href="#">hoge</a></li>
+                <li><a href="#">hoge</a></li>
+                <li><a href="#">hoge</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+        </center>
+        
+    </body>
+
+
+</html>
+
+<script>
+    function time() {
+        var now = new Date();
+        mon = now.getMonth()+1; day = now.getDate();
+        hou = now.getHours(); min = now.getMinutes(); sec = now.getSeconds();
+        year = now.getYear();
+        if (year < 2000) { year += 1900; }
+        if (mon <= "9"){mon = "0" + mon;};
+        if (day <= "9"){day = "0" + day;};
+        if (hou <= "9"){hou = "0" + hou;};
+        if (min <= "9"){min = "0" + min;};
+        if (sec <= "9"){sec = "0" + sec;};
+        document.rt.tokei.value= year +"/"+ mon +"/"+ day +" "+ hou +":"+ min +":"+ sec;
+        setTimeout('time()',1000);
+    }
+
+function show(inputData) {
+    var objID=document.getElementById( "layer_" + inputData );
+    var buttonID=document.getElementById( "category_" + inputData );
+    if(objID.className=='close') {
+        objID.style.display='block';
+        objID.className='open';
+    }else{
+        objID.style.display='none';
+        objID.className='close';
+    }
+}
+
+$(function(){
+  $("ul.menu").hide();
+  $("div.category").click(function(){
+                          $("ul.menu").slideUp();
+                          if($("+ul",this).css("display")=="none"){
+                          $("+ul",this).slideDown();
+                          }
+                          });
+  });
+
+</script>
+
+
