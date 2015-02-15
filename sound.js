@@ -2,7 +2,7 @@
 var playCount = 0;
 
 function sound(){
-    window.setTimeout("play();", 3000);
+    window.setTimeout("play();", 30000);
     function play(){
         //初回([playCount=0])以外だったら音声ファイルを巻き戻す
         if(playCount > 0){
@@ -15,4 +15,5 @@ function sound(){
         //初回再生が終わった判定用に[playCount]の値を0から1に変更する
         playCount = 1;
     }
+    
 }
