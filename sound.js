@@ -13,10 +13,11 @@ function sound(){
         //初回再生が終わった判定用に[playCount]の値を0から1に変更する
         playCount = 1;
     
-    function move(){
-        window.location.href = "honhe/";
-        }
     
-    setTimeout('move()',2500);
+    setTimeout('move();',3000);
 
+}
+
+function move(){
+    window.location.href = "honhe/";
 }
