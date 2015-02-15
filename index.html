@@ -9,6 +9,7 @@
         <meta http-equiv="Content-Script-Type" content="text/javascript" />
         <link rel="stylesheet" href="style.css" type="text/css" media="screen,print" />
         <script type="text/javascript" src="jquery-1.6.min.js"></script>
+		<script src="sound.js"></script>
 
         <title>ターミナルさん！？</title>
     </head>
@@ -35,10 +36,13 @@
             <br/>
         </center>
         
-        <div class="btn"><a href="/honhe">堕ちる</a></div>
+        <div class="btn"><a onClick="sound();" href="/honhe">堕ちる</a></div>
 
-   
-        
+<!-- 音声ファイルの読み込み 9〜10行目にURLを指定 -->
+<audio id="sound-file" preload="auto">
+	<source src="ochitana.mp3" type="audio/mp3">
+</audio>
+
     </body>
 
 
