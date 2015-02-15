@@ -13,10 +13,6 @@ function sound(){
         //初回再生が終わった判定用に[playCount]の値を0から1に変更する
         playCount = 1;
 
-    function move(){
     document.location = "http://www.nishishi.com/";
-    }
-    
-    setTimeout('move()',3000);
     
 }
