@@ -13,7 +13,7 @@
             /* エラーメッセージ出力場所のID */
             error_msg_id:'error',
             /* エラーメッセージ */
-            error_msg_text:'パスワードが間違っています',
+            error_msg_text:'またキミかぁ壊れるなぁ',
             /* ログイン後遷移先URL */
             action_url: '../honhe',
             /* リダイレクト先URL */
