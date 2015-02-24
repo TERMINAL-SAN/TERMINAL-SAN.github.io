@@ -16,7 +16,7 @@ $(this).ready(function() {
             /* エラーメッセージ */
             error_msg_text:'またキミかぁ壊れるなぁ',
             /* ログイン後遷移先URL */
-            action_url: 'honhe',
+            action_url: '../honhe',
             /* リダイレクト先URL(ログインページ) */
             redirect_url: 'index.html'
         });

@@ -15,7 +15,7 @@
             /* エラーメッセージ */
             error_msg_text:'パスワードが間違っています',
             /* ログイン後遷移先URL */
-            action_url: 'honhe',
+            action_url: '../honhe',
             /* リダイレクト先URL */
             redirect_url: 'index.html'
         }, options);
