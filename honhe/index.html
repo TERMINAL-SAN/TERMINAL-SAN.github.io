@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--
-    <link type="text/css" rel="stylesheet" href="css/simple_cookie_auth.css">
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.simple_cookie_auth.js"></script>
-        <script type="text/javascript" src="js/jquery.simple_cookie_auth.config.js"></script>
-     -->
-        
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Style-Type" content="text/css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="js/modernizr.custom.js"></script>
+    <script src="js/jquery.dlmenu.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+
 <title>HP</title>
-<link rel="stylesheet" type="text/css" href="./files/sample.css" media="tv,screen,print">
+<link rel="stylesheet" type="text/css" href="./css/sample.css" media="tv,screen,print">
 <style type="text/css">
 <!--
 body{
 	margin: 0;
-	padding: 100px 0 50px 0;
+	padding: 60px 0 0 0;
 }
 * html body{
 	overflow: hidden;
@@ -27,9 +27,13 @@ div#headerArea {
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100px;
-	background-color: #4E9ABE;
+	height: 60px;
+	background-color: white;
 	color: #fff;
+    border-bottom:double;
+    border-bottom-color:#8A0829;
+    border-top:double;
+    border-top-color:#8A0829;
 }
 div#footerArea {
 	position: fixed !important;
@@ -44,37 +48,63 @@ div#footerArea {
 * html div#contentsArea{
 	height: 100%;
 	overflow: auto;
+    background-color:#A9F5F2;
 }
 -->
 </style>
 </head>
 <body>
-<div id="headerArea">Header</div>
-<div id="contentsArea">
+<div id="headerArea">
+<img src="images/menubar.png" height="100%" style="position:absolute; left:40px;">
+<img src="images/200pxossan.png" height="100%" style="position:absolute; right:0;">
+<div id="dl-menu" class="dl-menuwrapper">
+        <button class="dl-trigger">Open Menu</button>
+        <ul class="dl-menu">
+            
+            <li><!--start-->
+                <a href="http://terminalsan.blog.fc2.com/">ブログ</a>
+            </li><!--end-->
+            <li><!--start-->
+                <a href="">ツール</a>
+                <ul class="dl-submenu">
+                    <li><a href="">Sub-Item 1</a></li>
+                    <li><a href="">Sub-Item 2</a></li>
+                    <li><a href="">Sub-Item 3</a></li>
+                    <li>
+                        <a href="">Sub-Item 4</a>
+                        <ul class="dl-submenu">
+                            <li><a href="#">Sub-Sub-Item 1</a></li>
+                            <li><a href="#">Sub-Sub-Item 2</a></li>
+                            <li><a href="#">Sub-Sub-Item 3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><!--end-->
+            <li><!--start-->
+                <a href="">アクセス</a>
+                <ul class="dl-submenu">
+                    <li><a href="http://twitter.com/aiaignition">Twitter</a></li>
+                    <li><a href="">Mail</a></li>
+                </ul>
+            </li><!--end-->
+
+
+
+        </ul>
+    </div><!-- /dl-menuwrapper -->
+
+</div>
+<div id="contentsArea" style="background-color:white; background-image:url(images/red.png); padding:13px 13px 35px 13px;">
+    <div id="SpringboadArea"
+        style="
+        padding:10px 10px 10px 10px;
+        border:double;
+        border-radius: 30px;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        background-color:white;
+        ">
 	Start<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
 	Contents<br>
 	Contents<br>
 	Contents<br>
@@ -119,11 +149,11 @@ div#footerArea {
 	Contents<br>
 	End
 </div>
-<div id="footerArea">
-	Footer
-	<p class="note">
-		このページは<a href="http://scuderia-web.com/" target="_blank">ScuderiaWeb</a>の<a href="http://scuderia-web.com/tips/xhtml_css/fixed_header_and_footer.php" target="_blank">ヘッダとフッタを固定して常に表示</a>のサンプルです。(このメッセージはサンプルとして影響のない場所に表示しています。)
-	</p>
 </div>
+<script>
+    $(function() {
+      $( '#dl-menu' ).dlmenu();
+      });
+    </script>
 
 </body></html>
