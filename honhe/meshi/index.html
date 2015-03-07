@@ -167,10 +167,18 @@ function test(){
        success: function(json){
        for(var key in json){
        tenpo[key] = {
-       "name": json[key].name,
-       "type": json[key].type,
-        "open": json[key].open,
-        "close": json[key].close
+           "name": json[key].name,
+           "type": json[key].type,
+           "open": json[key].open,
+           "close": json[key].close,
+           "open2": json[key].open2,
+           "close2": json[key].close2,
+           "Holi_open": json[key].Holi_open,
+           "Holi_close": json[key].Holi_close,
+           "Holi_open2": json[key].Holi_open2,
+           "Holi_close2": json[key].Holi_close2,
+           "Ord_2flag": json[key].Ord_2flag,
+           "Holi_2flag": json[key].Holi_2flag
        };
         }//格納終了
 
@@ -195,12 +203,33 @@ function test(){
 
            //検索開始
            for(var i in tenpo){
-           if(time >= tenpo[i].open && time < tenpo[i].close){
+           if(NowWeek == 0 || NowWeek == 6){//休日の場合の処理開始↓
+           if(tenpo[i].Holi_2flag == "1"){//open2などが存在する場合
+           if((time >= tenpo[i].Holi_open && time < tenpo[i].Holi_close) || (time >= tenpo[i].Holi_open2 && time < tenpo[i].Holi_close2)){
            result_tenpo[count] = tenpo[i].name;
            count++;
             }
+           }else{//open2などが存在しない場合(通常処理)
+           if(time >= tenpo[i].Holi_open && time < tenpo[i].Holi_close){
+           result_tenpo[count] = tenpo[i].name;
+           count++;
            }
-           console.log(result_tenpo);
+           }
+           }else{//休日の場合の処理終了↑ 平日の場合の処理開始↓
+           if(tenpo[i].Ord_2flag == "1"){//open2などが存在する場合
+           if((time >= tenpo[i].open && time < tenpo[i].close) || (time >= tenpo[i].open2 && time < tenpo[i].close2)){
+           result_tenpo[count] = tenpo[i].name;
+           count++;
+           }
+           }else{//open2などが存在しない場合
+           if(time >= tenpo[i].open && time < tenpo[i].close){
+           result_tenpo[count] = tenpo[i].name;
+           count++;
+           }
+           }
+           }
+           }
+           console.log(tenpo);
            document.getElementById("resultTable").innerHTML = result_tenpo;
 
     }
