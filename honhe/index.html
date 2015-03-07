@@ -13,7 +13,6 @@
 <title>HP</title>
 <link rel="stylesheet" type="text/css" href="./css/sample.css" media="tv,screen,print">
 <style type="text/css">
-<!--
 body{
 	margin: 0;
 	padding: 60px 0 0 0;
@@ -41,7 +40,7 @@ div#footerArea {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 50px;
+	height: 0px;
 	background-color: #4E9ABE;
 	color: #fff;
 }
@@ -50,10 +49,30 @@ div#footerArea {
 	overflow: auto;
     background-color:#A9F5F2;
 }
--->
+div.infobox {
+    height: 7.8em;
+    overflow: scroll;
+    border: red 1px dashed;
+    background-color: #fff0f0;
+}
+span.date {
+    font-size:13px;
+    padding:0 5px;
+
+}
+span.newinfo {
+    font-size:12px;
+    
+}
+div.infoborder {
+    border-bottom:dashed;
+    border-width:1px;
+    border-color:#F7819F;
+    word-wrap:break-word;
+}
 </style>
 </head>
-<body>
+<body style="background-image:url(images/red.png);">
 <div id="headerArea">
 <img src="images/menubar.png" height="100%" style="position:absolute; left:40px;">
 <img src="images/200pxossan.png" height="100%" style="position:absolute; right:0;">
@@ -94,61 +113,65 @@ div#footerArea {
     </div><!-- /dl-menuwrapper -->
 
 </div>
-<div id="contentsArea" style="background-color:white; background-image:url(images/red.png); padding:13px 13px 35px 13px;">
+<div id="contentsArea" style="background-image:url(images/red.png); background-color:white; padding:25px 13px 35px 13px; min-height:device-height;">
     <div id="SpringboadArea"
         style="
         padding:10px 10px 10px 10px;
         border:double;
-        border-radius: 30px;
-        -webkit-border-radius: 30px;
-        -moz-border-radius: 30px;
+        border-radius: 20px;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
         background-color:white;
         ">
-	Start<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	Contents<br>
-	End
-</div>
+    <img src="images/newbar2.png" style="width:100%;">
+    <div class="infobox">
+    <!--start-->
+    <div class="infoborder">
+    <span class="date">3/7 10:06</span>
+    <span class="newinfo">でこあfkぽjkfぺj</span>
+    </div>
+    <!--End-->
+    <!--start-->
+    <div class="infoborder">
+    <span class="date">3/7 10:06</span>
+    <span class="newinfo">あああ</span>
+    </div>
+    <!--End-->
+    <!--start-->
+    <div class="infoborder">
+        <span class="date">3/7 10:06</span>
+        <span class="newinfo">あああ</span>
+    </div>
+    <!--End-->
+    <!--start-->
+    <div class="infoborder">
+        <span class="date">3/7 10:06</span>
+        <span class="newinfo">あああ</span>
+    </div>
+    <!--End-->
+    <!--start-->
+    <div class="infoborder">
+        <span class="date">3/7 10:06</span>
+        <span class="newinfo">あああ</span>
+    </div>
+    <!--End-->
+    <!--start-->
+    <div class="infoborder">
+        <span class="date">3/7 10:06</span>
+        <span class="newinfo">あああ</span>
+    </div>
+    <!--End-->
+    </div>
+    </br>
+    <A href=""><img src="images/button1.png" style="padding:3px;"></A>
+    <A href="http://terminalsan.blog.fc2.com/"><img src="images/button2.png" style="padding:3px;"></A>
+    <A href=""><img src="images/button1.png" style="padding:3px;"></A>
+    </br>
+    <A href=""><img src="images/button1.png" style="padding:3px;"></A>
+    <A href=""><img src="images/button1.png" style="padding:3px;"></A>
+    <A href=""><img src="images/button1.png" style="padding:3px;"></A>
+
+    </div>
 </div>
 <script>
     $(function() {
