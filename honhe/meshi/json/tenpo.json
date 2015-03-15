@@ -670,5 +670,29 @@
         "Sat": "",
         "Restday": "0",
         "Address": "函館市桔梗町418-414"
+    },
+    "0029": {
+        "tenpo_id": "0029",
+        "name": "ほのか",
+        "type": "温泉",
+        "open": "0900",
+        "close": "2500",
+        "open2": "",
+        "close2": "",
+        "Holi_open": "0900",
+        "Holi_close": "2500",
+        "Holi_open2": "",
+        "Holi_close2": "",
+        "Ord_2flag": "",
+        "Holi_2flag": "",
+        "Sun": "",
+        "Mon": "",
+        "Tue": "",
+        "Wed": "",
+        "Thu": "",
+        "Fri": "",
+        "Sat": "",
+        "Restday": "0",
+        "Address": "札幌市手稲区富丘2条3丁目2-1"
     }
 }
