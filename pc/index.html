@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type"
+                content="text/html; charset=iso-2022-jp">
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta http-equiv="Content-Script-Type" content="text/javascript" />
+        <link rel="stylesheet" href="style.css" type="text/css" media="screen,print" />
+        <script type="text/javascript" src="jquery-1.6.min.js"></script>
+		<script src="sound.js"></script>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="jquery.simple_cookie_auth.js"></script>
+        <script type="text/javascript" src="jquery.simple_cookie_auth.config.js"></script>
+
+        <title>ターミナルさん！？</title>
+    </head>
+    
+    <style type="text/css">
+    </style>
+    
+    <body background="" bgcolor="black">
+        
+        <center>
+            
+            <img src="inmulogo.png" style="width: 60%;
+                height:auto;
+                border-radius: 20px;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                " alt="hayatoバナー">
+                <!--
+                <div id="pass" style="color:white; font-size:20px; font-weight: bold; font-family: monospace;"></div>
+                 -->
+                
+                <form method="post" action="javascriot:void(0);">
+                    <input type="text" id="password" style="background-color:black; border:none; color:white; text-align:center;">
+                            <div id="error" style="color: red"></div>
+                            </form>
+                <!--
+                <input type="button" id="login-btn" value="ログイン">
+                 -->
+        </center>
+        <br/>
+        
+        <center>
+        <table border="4" width="80%" cellspacing="0" cellpadding="3" bgcolor="white" style="border-style:groove; border-color:red">
+            <tr align="center" bgcolor="black">
+                <td><div class="btn1"><a onClick="play(1);">１</a></div></td>
+                <td><div class="btn2"><a onClick="play(2);">２</a></div></td>
+                <td><div class="btn3"><a onClick="play(3);">３</a></div></td>
+            </tr>
+            <tr align="center" bgcolor="black">
+                <td><div class="btn4"><a onClick="play(4);">４</a></div></td>
+                <td><div class="btn5"><a onClick="play(5);">５</a></div></td>
+                <td><div class="btn6"><a onClick="play(6);">６</a></div></td>
+            </tr>
+            <tr align="center" bgcolor="black">
+                <td><div class="btn7"><a onClick="play(7);">７</a></div></td>
+                <td><div class="btn8"><a onClick="play(8);">８</a></div></td>
+                <td><div class="btn9"><a onClick="play(9);">９</a></div></td>
+            </tr>
+            <tr align="center" bgcolor="black">
+                <td><div class="btnasu"><a onClick="play(10);">＊</a></div></td>
+                <td><div class="btn0"><a onClick="play(0);">０</a></div></td>
+                <td><div class="btnsha"><a onClick="play(11);">＃</a></div></td>
+            </tr>
+        </table>
+
+        <br/>
+        <table width="80%">
+            <tr>
+                <td><div class="btochiro" id="login-btn"><a>落ちろ！</a></div></td>
+                <td><div class="btrese"><a onClick="reset();">ﾘｾｯﾄ</a></div></td>
+            </tr>
+        </table>
+
+
+
+
+        
+        </center>
+
+<!-- 音声ファイルの読み込み 9〜10行目にURLを指定 -->
+<audio id="sound-file" preload="auto">
+	<source src="ochitana.mp3" type="audio/mp3">
+</audio>
+
+
+</body>
+
+
+<style type="text/css">
+    
+    .btn1 a {
+        width: 50px;
+        background-color: #FF4E4E;
+        border-radius: 3px;
+        box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+        color: #ffffff;
+        display: block;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        margin: 10px auto;
+        padding: 10px 0;
+    }
+.btn1 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn2 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn2 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn3 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn3 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn4 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn4 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn5 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn5 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn6 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn6 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn7 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn7 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn8 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn8 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn9 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn9 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btn0 a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btn0 a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btnasu a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btnasu a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+.btnsha a {
+    width: 50px;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btnsha a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+
+.btochiro a {
+    width: 100%;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btochiro a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+
+.btrese a {
+    width: 100%;
+    background-color: #FF4E4E;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 rgba(156,48,48,1);/* background-colorよりもちょい濃いめ */
+    color: #ffffff;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    padding: 10px 0;
+}
+.btrese a:hover {
+    box-shadow: 0 1px 0 rgba(156,48,48,1);
+    margin: 12px auto 8px;
+}
+
+</style>
+
+</html>
+
+
+
+
+
+
+
