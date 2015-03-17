@@ -152,23 +152,23 @@ body{
 function getData(){
     var player = new Array();
     var p_status = new Array();
-    document.getElementById("loading").style.visibility = "visible";//くるくる開始
-    for(i=1;i<=num_member;i++){
-        var id = "search_words"+i;
-        var name = document.getElementById(id).value;
-        var url = "http://api.bf4stats.com/api/playerInfo?plat=ps3&name=" + name + "&output=json&opt=weaponCategory";
-        getStatus(i);
-    }
+    var count_i = 1;
     
-    function getStatus(ii){
+    document.getElementById("loading").style.visibility = "visible";//くるくる開始
+        var id = "search_words1";
+        var name = document.getElementById(id).value;
+        var url = "http://api.bf4stats.com/api/playerInfo?plat=ps3&name=" + name + "&output=json";
+        getStatus();
+    
+    function getStatus(){
 
         $.ajax({
            type: 'GET',
            url: url,
            dataType: 'json',
            success: function(json){
-               p_status[ii] = json["weaponCategory"];//json["weapons"][166]が最後の要素
-               if(ii == num_member){//全部いれたらグラフかくよ
+               p_status[count_i] = json["weaponCategory"];//json["weapons"][166]が最後の要素
+               if(count_i == num_member){//全部いれたらグラフかくよ
                //グラフ開始
                $(function () {
                  var players_data = new Array();
@@ -224,7 +224,6 @@ function getData(){
                                 var href= "#chart";
                                 // 移動先を取得
                                 var target = $(href == "#" || href == "" ? 'html' : href);
-                                console.log(target);
                                 // 移動先を数値で取得
                                 var position = target.offset().top - 10;
                                 // スムーススクロール
@@ -237,6 +236,12 @@ function getData(){
                  });
                //グラフ終了
 
+               }else{
+                count_i++;
+                id = "search_words"+count_i;
+                name = document.getElementById(id).value;
+                url = "http://api.bf4stats.com/api/playerInfo?plat=ps3&name=" + name + "&output=json";
+               getStatus();
                }
            /*
             for(var i=0;i<=p_status["weaponCategory"].length-1;i++){
