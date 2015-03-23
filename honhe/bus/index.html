@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="css/buttons.css">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     
-<title>FUNバス時刻表</title>
+<title></title>
 <style type="text/css">
 .table_class {
     border-collapse: collapse; /* 枠線の表示方法 */
@@ -67,15 +67,15 @@
     sh = sh/2 - 35;
     $('#bottons').animate({
                           'marginTop': sh
-                          },1000)
+                          },500)
     $('#botton_1').animate({
                         'paddingTop': "20px",
                         'paddingBottom': "20px"
-                        },1000)
+                        },500)
     $('#botton_2').animate({
                         'paddingTop': "20px",
                         'paddingBottom': "20px"
-                        },1000)
+                        },500)
 
 
     var isOpen = false;
@@ -168,7 +168,7 @@
                //htmlソースをdiエリア内に出力する
                $('#content').append(source_button);
                $('#content').append(source_2);
-
+               
                //テーブルのスタイルを整える
                document.getElementById("maintable").width = "100%";
                document.getElementById("maintable").border = "0";
@@ -193,10 +193,17 @@
                var aNode = document.getElementsByTagName("th").item(3);
                aNode.parentNode.removeChild(aNode);
                 */
-               document.getElementById("loading").style.display = "none";//くるくる開始
+               document.getElementById("loading").style.display = "none";//くるくる終了
+               
+               //もし時間外なら
+               if(document.getElementsByTagName("th").length == 0){
+               document.getElementById("content").innerHTML = "";
+               document.getElementById("content").innerHTML = "条件に当てはまるバスがありません。</br>";
+               }
+
                },
                error: function(data) {
-               document.getElementById("loading").style.display = "none";//くるくる開始               
+               document.getElementById("loading").style.display = "none";//くるくる終了
                }
                });
     }
