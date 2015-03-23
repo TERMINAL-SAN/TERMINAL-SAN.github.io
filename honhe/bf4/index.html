@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.xdomainajax.js"></script>
+<link rel="stylesheet" type="text/css" href="css/buttons.css">
+<script type="text/javascript" src="js/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/start/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery.switchHat.js"></script>
+
+<title></title>
+<style type="text/css">
+html{
+    height:100%;
+    }
+* html div#container{
+    height:100%;
+}
+div#container{
+    width: 100%;
+    margin:0px auto;
+    position:relative;
+    min-height: 100%;
+}
+body > #container {
+    height: auto;
+}
+div#main{
+    padding-bottom:30px;
+}
+#foot{
+    position:absolute;
+    bottom:0px;
+    height:30px;
+    width:100%;
+}
+body{
+	margin: 0;
+	padding: 0px 0 0 0;
+    height:100%;
+    padding;0;
+}
+* html body{
+	overflow: hidden;
+}
+
+</style>
+</head>
+
+<body>
+<div id="container">
+    <div id="main" style="height:100%;">
+        <div id="alertArea" style="width:100%; margin-bottom:10px;">
+        <a href="javascript:void(0)" class="button button-block button-rounded button-primary button-large switchHat" onclick="plus_minus();">ご利用方法<span id="plus_minus" style="position:relative; right:-10px;">＋</span></a>
+        <div class="switchDetail" style="background:#EFF2FB; padding:0px 10px 10px 10px; font-size:11px;"><!--開くとでるとこ-->
+            <ul style="padding-left:1em; padding-top:1em; margin:0;">
+            <li>プレイヤー名を入力しデータ取得ボタンを押すと、武器カテゴリーごとのキル数がグラフ化されます。</li>
+            <li>複数人の入力に対応しています。追加、削除ボタンでどうぞ。</li>
+            <li>グラフの各要素をクリックすると実数が確認できます。</li>
+            </ul>
+        </div>
+        </div><!--alertArea-->
+        <center>
+        <A href="javascript:void(0)"><div class="button button-border-primary button-rounded" style="cursor:pointer;" onclick="addmember();">追加</div></A>
+        <A href="javascript:void(0)"><div class="button button-border-primary button-rounded" style="cursor:pointer; color:red; border-color:red;" onclick="removemember();">削除</div></A>
+        </center>
+        </br>
+        <center>
+        <div id="inputArea" style="font-size:13px;">
+        <div id="search_Area1">
+            プレイヤー名1<input type="text" style="width:60%; max-width:200px; margin-left:10px; font-size:20px;" id="search_words1">
+        </div>
+        </div><!--inputArea-->
+        </center>
+        </br>
+
+
+            <center>
+            <div onclick="getData();" style="cursor:pointer;" class="button button-3d-highlight button-circle" >データ取得</div></br>
+            <div id="loading" style="visibility:hidden; margin-top:10px;"><img src="images/gif-load.gif"></div>
+            </center>
+        </br>
+        <div id="resultArea"></div>
+    
+    </div><!--main-->
+<div id="chart" style="width:100%;"></div>
+<div id="foot">
+    <div id="copylight" style="
+        height:30px;
+        width:100%;
+        font-size:10px;
+        text-align:center;
+        padding-top:23px;
+        margin-top:80px;
+        color:white;
+        background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #FF0F0F),
+        color-stop(1, #FFA3A3)
+        );
+        background-image: -o-linear-gradient(bottom, #FF0F0F 0%, #FFA3A3 100%);
+        background-image: -moz-linear-gradient(bottom, #FF0F0F 0%, #FFA3A3 100%);
+        background-image: -webkit-linear-gradient(bottom, #FF0F0F 0%, #FFA3A3 100%);
+        background-image: -ms-linear-gradient(bottom, #FF0F0F 0%, #FFA3A3 100%);
+        background-image: linear-gradient(to bottom, #FF0F0F 0%, #FFA3A3 100%);
+        ">
+        Copyright (C) 2015 MUROFUSHI_BIGMEN All Rights Reserved.
+    </div>
+</div>
+</div><!--content-->
+<script>
+    var num_member = 1;
+
+
+
+    function addmember(){
+                //div作成
+                var divnode = document.createElement('div');
+        	    divnode.id = "search_Area"+String(num_member+1);
+                divnode.innerHTML = "プレイヤー名"+String(num_member+1);
+                document.getElementById("inputArea").appendChild(divnode);
+                //input作成
+                var inputnode = document.createElement('input');
+                inputnode.style.width =  "60%";
+                inputnode.style.fontSize =  "20px";
+                inputnode.style.maxWidth =  "200px";
+                inputnode.style.marginLeft =  "10px";
+                inputnode.id = "search_words"+String(num_member+1);
+                document.getElementById(divnode.id).appendChild(inputnode);
+
+                num_member++;
+    }
+
+    function removemember(){
+        if(num_member<=1){
+        }else{
+        var element = document.getElementById("search_Area"+num_member);
+        element.parentNode.removeChild(element);
+        num_member--;
+        }
+    }
+
+
+
+function getData(){
+    var player = new Array();
+    var p_status = new Array();
+    var count_i = 1;
+    
+    
+        var id = "search_words1";
+        var name = document.getElementById(id).value;
+        var url = "http://api.bf4stats.com/api/playerInfo?plat=ps3&name=" + name + "&output=json";
+        getStatus();
+    
+    function getStatus(){
+
+        $.ajax({
+           type: 'GET',
+           url: url,
+           dataType: 'json',
+           success: function(json){
+               p_status[count_i] = json["weaponCategory"];//json["weapons"][166]が最後の要素
+               if(count_i == num_member){//全部いれたらグラフかくよ
+               //グラフ開始
+               $(function () {
+                 var players_data = new Array();
+                 var arr = new Array();
+                 
+                 for(var i=1;i<=num_member;i++){
+                 if(i==1){
+                 players_data = [{
+                                 name: document.getElementById("search_words"+i).value,
+                                 data: [p_status[i][0]["stat"]["kills"],p_status[i][1]["stat"]["kills"],p_status[i][2]["stat"]["kills"],p_status[i][3]["stat"]["kills"],p_status[i][4]["stat"]["kills"],p_status[i][5]["stat"]["kills"],p_status[i][6]["stat"]["kills"],p_status[i][7]["stat"]["kills"],p_status[i][8]["stat"]["kills"],p_status[i][9]["stat"]["kills"],p_status[i][10]["stat"]["kills"],p_status[i][11]["stat"]["kills"]]},
+                                 ];
+                 }else{
+                 arr = {
+                 name: document.getElementById("search_words"+i).value,
+                 data: [p_status[i][0]["stat"]["kills"],p_status[i][1]["stat"]["kills"],p_status[i][2]["stat"]["kills"],p_status[i][3]["stat"]["kills"],p_status[i][4]["stat"]["kills"],p_status[i][5]["stat"]["kills"],p_status[i][6]["stat"]["kills"],p_status[i][7]["stat"]["kills"],p_status[i][8]["stat"]["kills"],p_status[i][9]["stat"]["kills"],p_status[i][10]["stat"]["kills"],p_status[i][11]["stat"]["kills"]]};
+                 players_data.push(arr);
+                 }
+                 }
+
+
+                 /*players_data = [{
+                            name: 'tdtdkk',
+                            data: [p_status[1][0]["stat"]["kills"],p_status[1][1]["stat"]["kills"],p_status[1][2]["stat"]["kills"],p_status[1][3]["stat"]["kills"],p_status[1][4]["stat"]["kills"],p_status[1][5]["stat"]["kills"],p_status[1][6]["stat"]["kills"],p_status[1][7]["stat"]["kills"],p_status[1][8]["stat"]["kills"],p_status[1][9]["stat"]["kills"],p_status[1][10]["stat"]["kills"],p_status[1][11]["stat"]["kills"]]
+                            }];*/
+                 
+                 
+                 $('#chart').highcharts({
+                                        title: {
+                                        text:"WeaponCategory Kills"
+                                        },
+                                        chart: {
+                                        type: 'column'
+                                        },
+                                        yAxis:{
+                                        max:8000,
+                                        title:{text:"キル数"}
+                                        },
+                                        xAxis:{
+                                        categories:[p_status[1][0]["name"],p_status[1][1]["name"],p_status[1][2]["name"],p_status[1][3]["name"],p_status[1][4]["name"],p_status[1][5]["name"],p_status[1][6]["name"],p_status[1][7]["name"],p_status[1][8]["name"],p_status[1][9]["name"],p_status[1][10]["name"],p_status[1][11]["name"]],
+                                        max:p_status[1].length-1,
+                                        title:{text:"プレイヤー名"}
+                                        },
+                                        series:players_data
+                                        });
+                 document.getElementById("loading").style.visibility = "hidden";//くるくる終わり
+                 $(function(){
+                   setTimeout(function(){
+                              //スクロールする
+                              $(function(){
+                                // スクロールの速度
+                                var speed = 400; // ミリ秒
+                                // アンカーの値取得
+                                var href= "#chart";
+                                // 移動先を取得
+                                var target = $(href == "#" || href == "" ? 'html' : href);
+                                // 移動先を数値で取得
+                                var position = target.offset().top - 10;
+                                // スムーススクロール
+                                $('body,html').animate({scrollTop:position}, speed, 'swing');
+                                return false;
+                                });
+                              },1);
+                   });
+
+                 });
+               //グラフ終了
+
+               }else{
+                count_i++;
+                id = "search_words"+count_i;
+                name = document.getElementById(id).value;
+                url = "http://api.bf4stats.com/api/playerInfo?plat=ps3&name=" + name + "&output=json";
+               getStatus();
+               }
+           /*
+            for(var i=0;i<=p_status["weaponCategory"].length-1;i++){
+           console.log(p_status["weaponCategory"][i]["name"] + ":" +p_status["weaponCategory"][i]["stat"]["kills"] + "kills");
+           }
+            */
+           /*
+            */
+           },//サクセス終わり
+               error: function(json) {
+                 document.getElementById("loading").style.visibility = "hidden";//
+               alert("入力欄が空白か、存在しないプレイヤー名です。");
+               }
+           });//ajax終わり
+ 
+    }
+}
+
+function plus_minus(){
+    if(document.getElementById("plus_minus").innerHTML == "＋"){
+        document.getElementById("plus_minus").innerHTML = "ー";
+    }else{
+        document.getElementById("plus_minus").innerHTML = "＋";
+    }
+
+}
+
+</script>
+
+</body>
+</html>
+
+
