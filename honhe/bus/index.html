@@ -38,9 +38,15 @@
             <a id="botton_2" href="javascript:void(0)" class="button button-rounded button-flat-primary" style="width:90px; font-size:14px;">大学へ行く<i class="fa fa-caret-down"></i></a>
             
             <ul class="button-dropdown-menu-below">
-                <li><a href="javascript:void(0)" onclick="readBaseURL(155,165);">亀田支所前 から</a></li>
                 <li><a href="javascript:void(0)" onclick="readBaseURL(149,165);">五稜郭 から</a></li>
+                <li><a href="javascript:void(0)" onclick="readBaseURL(154,165);">富岡 から</a></li>
+                <li><a href="javascript:void(0)" onclick="readBaseURL(155,165);">亀田支所前 から</a></li>
+                <li><a href="javascript:void(0)" onclick="readBaseURL(156,165);">海洋気象台前 から</a></li>
+                <li><a href="javascript:void(0)" onclick="readBaseURL(157,165);">赤川通 から</a></li>
+                <li><a href="javascript:void(0)" onclick="readBaseURL(159,165);">赤川入り口 から</a></li>
+                <!--
                 <li class="button-dropdown-divider"><a href="javascript:void(0)">Other</a></li>
+                 -->
             </ul>
         </span>
         </div><!--bottons-->
@@ -122,18 +128,17 @@
             case 155:
             stop_in_name = "亀田支所前";
             break;
-            default:
+            case 154:
+            stop_in_name = "富岡";
             break;
-        }
-        switch (stop_out){
-            case 165:
-            stop_out_name = "はこだて未来大学";
+            case 156:
+            stop_in_name = "海洋気象台前";
             break;
-            case 149:
-            stop_out_name = "五稜郭";
+            case 157:
+            stop_in_name = "赤川通";
             break;
-            case 155:
-            stop_out_name = "亀田支所前";
+            case 159:
+            stop_in_name = "赤川入り口";
             break;
             default:
             break;
