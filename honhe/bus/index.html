@@ -155,19 +155,22 @@
                end_1 = source_1.indexOf("</a></div></td></tr></tbody></table>");
                source_2 = "<table id=\"maintable\""+source_1.substr(start_1,end_1-start_1+36);
                source_button = "<center><a onclick=\"upload();\" href=\"javascript:void(0)\" class=\"button button-border-primary button-pill\" style=\"margin-top:5px; margin-bottom:7px;\"><i class=\"fa fa-refresh\"></i> 更新する</a></center>";
+               source_twitter = "<div style=\"font-size:12px; float:right; margin-top:10px; padding:5px 5px 5px 5px;\"><span>バグ報告、バス停追加等→</span> <A href=\"https://twitter.com/AIAIGNITION\"><img src=\"img/twitter_logo.png\" width=\"20px\"></A></div>";
 
                
                var Parent_Node = document.getElementById('content');
                var div_Node = document.createElement('div');
                div_Node.style.color = "black";
+               div_Node.style.fontSize = "13px";
                var node_text = "乗り場："+stop_in_name;
                var textNode = document.createTextNode(node_text);
                div_Node.appendChild(textNode);
-               Parent_Node.appendChild(div_Node);
                
                //htmlソースをdiエリア内に出力する
+               Parent_Node.appendChild(div_Node);
                $('#content').append(source_button);
                $('#content').append(source_2);
+               $('#content').append(source_twitter);
                
                //テーブルのスタイルを整える
                document.getElementById("maintable").width = "100%";
