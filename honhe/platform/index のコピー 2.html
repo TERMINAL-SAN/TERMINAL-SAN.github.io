@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<script type="text/javascript" src="jquery.min.js"></script>
+<title>コードジェネレータ</title>
+<style type="text/css">
+</style>
+</head>
+
+<body style="background:white;">
+    <div style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px;" id="sensor_basic_bar">
+        センサ基本情報の入力
+    </div>
+    <div id="sensor_basic_form"><!--センサ基本情報入力フォームはじめ-->
+    <div style="padding-bottom:5px;"></div>
+    <table border="1" bordercolor="gray" cellpadding="5" width="100%" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">使用ポート番号</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span></td>
+                <td style="padding-left:10px;" id="port_title"><select id="port">
+                    <option value="0">0</option>
+                </select></td>
+                </tr>
+            <tr>
+                <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">スレーブアドレス</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span></td>
+                <td style="padding-left:10px;" id="slave_title"><span style="font-size:12px; padding-right:3px;">0x</span><input type="text" id="slave" value="" size="5" maxlength="2" style="border:1px #A9D0F5 solid;" class="slave_fm">　<select id="bit_size">
+                    <option value="7">7ビット</option>
+                    <option value="8">8ビット(Writeアドレス)</option>
+                    </select>
+                <div id="errorLocation" style="width:280px;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">センサ初期化</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span></td>
+                <td style="padding-left:10px;" id="init_title"><select id="init">
+                    <option value="0">必要</option>
+                    <option value="1">不必要</option>
+                </select></td>
+                </tr>
+            <tr>
+                <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">内蔵レジスタ</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span></td>
+                <td style="padding-left:10px;" id="eeprom_title"><select id="eeprom">
+                    <option value="0">あり</option>
+                    <option value="1">なし</option>
+                </select></td>
+                </tr>
+        </tbody>
+        <input type="hidden" id="check_error" value="false">
+        <input type="hidden" id="check_success" value="false">
+    </table><!--フォーム終わり-->
+    <div id="successLocation" style="width:95%; position:relative; top:4px;"></div>
+<center>
+    <BUTTON type="button" onClick="sensor_basic_check();" style="padding:5px 10px 5px 10px; position:relative; top:10px;">確認する</BUTTON>
+    <BUTTON type="button" onClick="close_basicForm();" class="next_button" id="basic_nextButton">次へ</BUTTON>
+</center>
+
+<center>
+</br>
+    <input type="hidden" id="port_out" value="">
+    <input type="hidden" id="slave_out" value="">
+    <input type="hidden" id="init_out" value="">
+    <input type="hidden" id="eeprom_out" value="">
+</center>
+</div><!--センサ基本情報入力フォーム終わり-->
+    
+<!--タイトル-->
+<div id="init_bar" style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px; display:none;">初期化関数作成(内部レジスタなし)</div>
+<!--初期化関数(内部レジスタなし)作成フォーム開始-->
+<div id="init_form" style="display:none;">
+<center>
+    <BUTTON type="button" onClick="back_to_basicForm();" id="basic_beforeButton" class="before_button">前へ</BUTTON>
+</center>
+<div style="padding-bottom:5px;"></div>
+</div>
+<!--初期化関数作成フォーム終了-->
+
+<!--タイトル-->
+<div id="init_eeprom_bar" style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px; display:none;">初期化関数作成(内部レジスタあり)</div>
+<!--初期化関数(内部レジスタあり)作成フォーム開始-->
+<div id="init_form_eeprom" style="display:none;">
+    <div style="padding-bottom:5px;"></div>
+    <BUTTON type="button" onClick="add_init_eeprom();">追加</BUTTON>
+    <BUTTON type="button" onClick="delete_init_eeprom();">削除</BUTTON>
+    <div id="init_eeprom_block_parent">
+        <div id="init_eeprom_block_0"><!--複製するやつここから-->
+            <table border="1" bordercolor="gray" cellpadding="5" width="100%" style="border-collapse: collapse;">
+                <tbody>
+                    <tr>
+                        <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">初期設定コマンド</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span></td>
+                        <td style="padding-left:10px;">
+                            <span style="font-size:12px; padding-right:3px;">サブアドレス「0x</span><input type="text" id="subadr_init_eeprom_0" value="" size="5" maxlength="2" style="border:1px #A9D0F5 solid;" class="slave_fm"><span style="font-size:12px; padding-right:3px;">」に「0x</span><input type="text" id="data_init_eeprom_0" value="" size="5" maxlength="2" style="border:1px #A9D0F5 solid;" class="slave_fm"><span style="font-size:12px; padding-right:3px;">」を書き込み</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">待機時間</span></td>
+                        <td><input type="number" id="wait_init_eeprom_0" style="width:40px; border:1px #A9D0F5 solid;"><span style="font-size:12px; padding-left:3px;">ms待機する</td>
+                    </tr>
+                </tbody>
+                <input type="hidden" id="check_error_init_eeprom" value="false">
+                <input type="hidden" id="check_success_init_eeprom" value="false">
+            </table>
+            <div style="padding-bottom:5px;"></div>
+        </div><!--複製するやつここまで-->
+    </div>
+            <center>
+            <BUTTON type="button" onClick="back_to_basicForm();" id="basic_beforeButton" class="before_button_active">前へ</BUTTON>
+            <BUTTON type="button" onClick="test();" id="basic_beforeButton" class="before_button_active">確認する</BUTTON>
+            </center>
+
+            <!--追加時に使う、カウント-->
+            <input type="hidden" id="count_init_eeprom" value="0">
+
+</div>
+<!--初期化関数作成フォーム終了-->
+
+<!--タイトル-->
+<div id="getsensor_bar" style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px; display:none;">センサ値関数作成(内部レジスタなし)</div>
+<!--初期化関数作成(内部レジスタなし)フォーム開始-->
+<div id="getsensor_form" style="display:none;">
+<center>
+    <BUTTON type="button" onClick="back_to_basicForm();" id="basic_beforeButton" class="before_button">前へ</BUTTON>
+</center>
+
+<div style="padding-bottom:5px;"></div>
+</div>
+<!--初期化関数作成フォーム終了-->
+
+<!--タイトル-->
+<div id="getsensor_eeprom_bar" style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px; display:none;">センサ値関数作成(内部レジスタあり)</div>
+<!--センサ値取得関数作成(内部レジスタあり)フォーム開始-->
+<div id="getsensor_form_eeprom" style="display:none;">
+    <center>
+        <BUTTON type="button" onClick="back_to_basicForm();" id="basic_beforeButton" class="before_button">前へ</BUTTON>
+    </center>
+
+    <div style="padding-bottom:5px;"></div>
+</div>
+<!--センサ値取得関数作成フォーム終了-->
+
+
+<script>
+    function sensor_basic_check(){
+
+        var port = document.getElementById("port").value;
+        var slave = document.getElementById("slave").value;
+        var bit_size = document.getElementById("bit_size").value;
+        var init = document.getElementById("init").value;
+        var eeprom = document.getElementById("eeprom").value;
+        var error_parent = document.getElementById("errorLocation");
+        var success_parent = document.getElementById("successLocation");
+        
+        /*エラーdivのクリーン*/
+        if( document.getElementById("check_error").value == "true" ){
+            //子divの指定
+            var child = document.getElementById("slave_error");
+            error_parent.removeChild(child);
+        }
+
+        /*サクセスdivのクリーン*/
+        if( document.getElementById("check_success").value == "true" ){
+            //子divの指定
+            var child = document.getElementById("all_success");
+            success_parent.removeChild(child);
+        }
+        
+        /*スレーブアドレスの未指定エラー*/
+        if( slave == "" ){//エラー時
+            //エラーフラグ、サクセスフラグを設定
+            document.getElementById("check_error").value = "true";
+            document.getElementById("check_success").value = "false";
+
+            //該当箇所を協調
+            document.getElementById("slave").style.backgroundColor = "#FDBBC5";
+            
+            //エラーdivの生成
+            var element = document.createElement("div");
+            element.id = "slave_error";
+            element.innerHTML = "ERROR! スレーブアドレスを入力してください。";
+            element.style.backgroundColor = "red";
+            element.style.color = "white";
+            element.style.fontSize = "12px";
+            
+            //親へエラーdivを追加
+            error_parent.appendChild(element);
+            
+            document.getElementById("basic_nextButton").style.display = "none";
+
+
+        }else{//成功時
+
+            //該当箇所の協調を修正
+            document.getElementById("slave").style.backgroundColor = "lightgreen";
+            
+            //サクセスdivの生成
+            var element = document.createElement("div");
+            element.id = "all_success";
+            element.innerHTML = "SUCCEED!";
+            element.style.backgroundColor = "lightgreen";
+            element.style.color = "black";
+            
+            //親へサクセスdivを追加
+            success_parent.appendChild(element);
+            
+            /*各値の変換、hiddenへ登録*/
+            
+            //ポート番号の登録
+            document.getElementById("port_out").value = port;
+            
+            //初期化情報の登録
+            document.getElementById("init_out").value = init;
+            
+            //内部レジスタ情報の登録
+            document.getElementById("eeprom_out").value = eeprom;
+            
+            //スレーブアドレスの変換
+            if( bit_size == "7" ){//左に1ビットシフトして16進数文字列に変換
+                slave = parseInt("0x"+slave,16);//16進数（文字列）を10進数に変換
+                slave = slave*2;//２倍する（１ビット左にシフト）
+                slave = slave.toString(16);//文字列に戻す
+            }
+            //スレーブアドレスの登録
+            document.getElementById("slave_out").value = slave;
+
+            //エラーフラグ、サクセスフラグを設定
+            document.getElementById("check_error").value = "false";
+            document.getElementById("check_success").value = "true";
+            
+            document.getElementById("basic_nextButton").style.display = "block";
+            
+            /*設定値を表示*/
+            console.log("port:"+document.getElementById("port_out").value);
+            console.log("slave:"+document.getElementById("slave_out").value);
+            console.log("init:"+document.getElementById("init_out").value);
+            console.log("eeprom:"+document.getElementById("eeprom_out").value);
+        }
+    }
+
+    function close_basicForm(){//基本情報入力を閉じるボタン、同時に初期化か取得関数作成画面を表示
+        document.getElementById("sensor_basic_form").style.display = "none";
+        document.getElementById("sensor_basic_bar").style.backgroundColor = "#D8D8D8";
+        document.getElementById("sensor_basic_bar").style.borderColor = "#D8D8D8";
+
+
+        var init = document.getElementById("init_out").value;
+        var eeprom = document.getElementById("eeprom_out").value;
+        
+        if( init == "0" ){  //初期化が必要な場合初期化関数作成画面を表示
+            if( eeprom == "0" ){
+                /*初期化あり、内部レジスタあり*/
+                document.getElementById("init_form_eeprom").style.display = "block";
+                document.getElementById("init_eeprom_bar").style.display = "block";
+            }else{
+                /*初期化あり、内部レジスタなし*/
+                document.getElementById("init_form").style.display = "block";
+                document.getElementById("init_bar").style.display = "block";
+            }
+        }else{              //センサ値取得関数作成画面を表示
+            if( eeprom == "0" ){
+                /*初期化なし、内部レジスタあり*/
+                document.getElementById("getsensor_form_eeprom").style.display = "block";
+                document.getElementById("getsensor_eeprom_bar").style.display = "block";
+            }else{
+                /*初期化なし、内部レジスタなし*/
+                document.getElementById("getsensor_form").style.display = "block";
+                document.getElementById("getsensor_bar").style.display = "block";
+            }
+        }
+        document.getElementById("basic_nextButton").style.display = "none";
+        document.getElementById("basic_beforeButton").style.display = "block";
+
+    }
+
+    function back_to_basicForm(){//基本情報入力へ戻る
+        document.getElementById("sensor_basic_form").style.display = "block";
+        document.getElementById("sensor_basic_bar").style.backgroundColor = "black";
+        document.getElementById("sensor_basic_bar").style.borderColor = "white";
+
+        document.getElementById("init_form").style.display = "none";
+        document.getElementById("init_form_eeprom").style.display = "none";
+        document.getElementById("getsensor_form").style.display = "none";
+        document.getElementById("getsensor_form_eeprom").style.display = "none";
+
+        document.getElementById("init_bar").style.display = "none";
+        document.getElementById("init_eeprom_bar").style.display = "none";
+        document.getElementById("getsensor_bar").style.display = "none";
+        document.getElementById("getsensor_eeprom_bar").style.display = "none";
+
+
+    }
+
+    function add_init_eeprom(){
+        //複製するdivの生成
+        var element_org = document.getElementById("init_eeprom_block_0");
+        var element = element_org.cloneNode(true);
+        var count = document.getElementById("count_init_eeprom").value;
+        
+        count = parseInt(count,10) + 1;//カウント値を＋１
+        /*タグ調整*/
+        element.id = "init_eeprom_block_"+count;//count=今のナンバリング（要素数-1）
+        console.log(element);
+
+        //親へサクセスdivを追加
+        var parent = document.getElementById("init_eeprom_block_parent");
+        parent.appendChild(element);
+        
+        document.getElementById("count_init_eeprom").value = count;//＋１したものを格納
+        console.log(count);
+
+
+    }
+
+
+    function delete_init_eeprom(){
+        
+        var count = document.getElementById("count_init_eeprom").value;
+
+        if( count > 0 ){
+            //親の指定
+            var parent = document.getElementById("init_eeprom_block_parent");
+            //削除するdivの指定
+            var child = document.getElementById("init_eeprom_block_"+count);
+            //親から子を削除
+            parent.removeChild(child);
+            
+            count = parseInt(count,10) - 1;
+            count.toString(10);
+            document.getElementById("count_init_eeprom").value = count;
+            console.log(count);
+        }
+     }
+
+
+    function test(){
+//        console.log(document.getElementById("wait_init_eeprom_0").value);
+    }
+
+$(function() {
+  $('.slave_fm').change(function(){
+                  var txt  = $(this).val();
+                  var han = txt.replace(/[Ａ-Ｚａ-ｚ０-９]/g,function(s){return String.fromCharCode(s.charCodeAt(0)-0xFEE0)});
+                  $(this).val(han);
+                  });
+  });
+</script>
+
+
+<style type="text/css">
+    
+.sensor_basic_0 {
+    color: black;
+    background-color: #D0E9FF;
+    padding-left:30px;
+}
+.next_button {
+    padding:5px 10px 5px 10px;
+    background-color: #248;
+    color: #fff;
+    border-color: none;
+    position:relative;
+    top:20px;
+    width:80px;
+    display:none;
+}
+.before_button {
+    padding:5px 10px 5px 10px;
+    background-color: #248;
+    color: #fff;
+    border-color: none;
+    position:relative;
+    top:20px;
+    width:80px;
+}
+.before_button_active {
+    padding:5px 10px 5px 10px;
+    background-color: #248;
+    color: #fff;
+    border-color: none;
+    width:80px;
+}
+
+    </style>
+
+
+</body>
+</html>

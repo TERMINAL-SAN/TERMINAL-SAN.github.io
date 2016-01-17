@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<script type="text/javascript" src="jquery.min.js"></script>
+<title>コードジェネレータ</title>
+<style type="text/css">
+</style>
+</head>
+
+<body style="background:white;">
+    <div style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px;" >
+        センサ基本情報の入力
+    </div>
+    <div style="padding-bottom:5px;"></div>
+
+    <table border="1" cellpadding="5" width="100%">
+        <tbody>
+            <tr>
+                <td class="sensor_basic_0" height="55">使用ポート番号</a></td>
+                <td style="padding-left:10px;" id="port_title"><select id="port">
+                    <option value="0">0</option>
+                </select>
+                </tr>
+            <tr>
+                <td class="sensor_basic_0" height="55">センサのスレーブアドレス(16進数)　</a></td>
+                <td style="padding-left:10px;" id="slave_title"><span style="font-size:12px; padding-right:3px;">0x</span><input type="text" id="slave" value="" size="5" maxlength="2" class="slave_fm">　<select id="bit_size">
+                    <option value="7">7ビット</option>
+                    <option value="8">8ビット(Writeアドレス)</option>
+                    </select>
+                <div id="errorLocation" style="width:95%;"></div>
+            </tr>
+            <tr>
+                <td class="sensor_basic_0" height="55">センサの初期化</a></td>
+                <td style="padding-left:10px;" id="init_title"><select id="init">
+                    <option value="0">必要</option>
+                    <option value="1">不必要</option>
+                </select>
+                </tr>
+            <tr>
+                <td class="sensor_basic_0" height="55">内部レジスタ</a></td>
+                <td style="padding-left:10px;" id="eeprom_title"><select id="eeprom">
+                    <option value="0">あり</option>
+                    <option value="1">なし</option>
+                </select>
+                </tr>
+        </tbody>
+        <input type="hidden" id="check_error" value="false">
+        <input type="hidden" id="check_success" value="false">
+    </table><!--フォーム終わり-->
+<center>
+    <div id="successLocation" style="width:95%; position:relative; top:4px;"></div>
+    <BUTTON type="button" onClick="sensor_basic_check();" style="padding:5px 10px 5px 10px; position:relative; top:10px;">チェック</BUTTON>
+</center>
+
+<form name="initForm" action="initForm.html" method="get">
+<input type="hidden" name="v1" value="">
+<input type="submit" value="送信">
+</form>
+
+
+<style type="text/css">
+    
+    .sensor_basic_0 {
+        color: black;
+        background-color: #D0E9FF;
+    }
+    
+</style>
+
+<script>
+    function sensor_basic_check(){
+
+        var port = document.getElementById("port").value;
+        var slave = document.getElementById("slave").value;
+        var bit_size = document.getElementById("bit_size").value;
+        var init = document.getElementById("init").value;
+        var eeprom = document.getElementById("eeprom").value;
+        var error_parent = document.getElementById("errorLocation");
+        var success_parent = document.getElementById("successLocation");
+        
+        /*エラーdivのクリーン*/
+        if( document.getElementById("check_error").value == "true" ){
+            //子divの指定
+                var child = document.getElementById("slave_error");
+                error_parent.removeChild(child);
+        }
+
+        /*サクセスdivのクリーン*/
+        if( document.getElementById("check_success").value == "true" ){
+            //子divの指定
+            var child = document.getElementById("all_success");
+            success_parent.removeChild(child);
+        }
+        
+        /*スレーブアドレスの未指定エラー*/
+        if( slave == 0 ){
+            //エラーフラグ、サクセスフラグを設定
+            document.getElementById("check_error").value = "true";
+            document.getElementById("check_success").value = "false";
+            console.log("errorIs:"+document.getElementById("check_error").value);
+            console.log("successIs:"+document.getElementById("check_success").value);
+            
+            //該当箇所を協調
+            document.getElementById("slave").style.backgroundColor = "#FDBBC5";
+            
+            //エラーdivの生成
+            var element = document.createElement("div");
+            element.id = "slave_error";
+            element.innerHTML = "ERROR! スレーブアドレスを入力してください";
+            element.style.backgroundColor = "red";
+            element.style.color = "white";
+            element.style.fontSize = "12px";
+            
+            //親へエラーdivを追加
+            error_parent.appendChild(element);
+
+        }else{
+
+            //該当箇所の協調を修正
+            document.getElementById("slave").style.backgroundColor = "lightgreen";
+            
+            //サクセスdivの生成
+            var element = document.createElement("div");
+            element.id = "all_success";
+            element.innerHTML = "ALL SUCCESS!";
+            element.style.backgroundColor = "lightgreen";
+            element.style.color = "black";
+            
+            //親へサクセスdivを追加
+            success_parent.appendChild(element);
+
+            //エラーフラグ、サクセスフラグを設定
+            document.getElementById("check_error").value = "false";
+            document.getElementById("check_success").value = "true";
+            console.log("errorIs:"+document.getElementById("check_error").value);
+            console.log("successIs:"+document.getElementById("check_success").value);
+        }
+/*
+        document.getElementById("port_title").style.backgroundColor = "lightgreen";
+        document.getElementById("init_title").style.backgroundColor = "lightgreen";
+        document.getElementById("eeprom_title").style.backgroundColor = "lightgreen";
+*/
+
+        /*
+        if( bit_size == "7" ){
+            document.write("ビットサイズは、7bitです。");
+        }else{
+            document.write("ビットサイズは、8ビットです。");
+        }*/
+        /*
+        if( init == 0 ){
+            document.write("初期化は必要");
+        }else if( init == 1 ){
+            document.write("初期化は不必要");
+        }*/
+/*
+        if( eeprom == 0 ){
+                document.write("内部レジスタあり");
+        }else if( eeprom == 1 ){
+                document.write("内部レジスタなし");
+        }
+*/
+//        console.log(eeprom);
+
+    }
+
+$(function() {
+  $('.slave_fm').change(function(){
+                  var txt  = $(this).val();
+                  var han = txt.replace(/[Ａ-Ｚａ-ｚ０-９]/g,function(s){return String.fromCharCode(s.charCodeAt(0)-0xFEE0)});
+                  $(this).val(han);
+                  });
+  });
+</script>
+
+
+</body>
+</html>

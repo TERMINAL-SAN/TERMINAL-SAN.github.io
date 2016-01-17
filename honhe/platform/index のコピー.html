@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+
+<title>コードジェネレータ</title>
+<style type="text/css">
+</style>
+</head>
+
+<body style="background:white;">
+    <div style="border:1px solid gray; width:100%; background-color:black; color:white; padding:3px; font-size:20px;" >
+        センサ基本情報の入力
+    </div>
+    <div style="padding-bottom:5px;"></div>
+
+<form method="GET" action="" name="sensor_basic_form" onSubmit="sensor_basic_check();return false;"><!--フォーム開始-->
+    <table border="1" cellpadding="5" width="100%">
+        <tbody>
+            <tr>
+                <td class="sensor_basic_0">使用ポート番号</a></td>
+                <td style="padding-left:10px;"><select name="port">
+                    <option value="0">0</option>
+                </select>
+                </tr>
+            <tr>
+                <td class="sensor_basic_0" id="slave_title">センサのスレーブアドレス(16進数)　</a></td>
+                <td style="padding-left:10px;"><input type="text" name="slave" value="" size="10">　<input type="radio" name="bitSize" checked="checked">7bit　<input type="radio" name="bitSize">8bit（Writeアドレス）</td>
+            </tr>
+            <tr>
+                <td class="sensor_basic_0">センサの初期化</a></td>
+                <td style="padding-left:10px;"><select name="init">
+                    <option value="0">必要</option>
+                    <option value="1">不必要</option>
+                </select>
+                </tr>
+            <tr>
+                <td class="sensor_basic_0">内部レジスタ</a></td>
+                <td style="padding-left:10px;"><select name="eeprom">
+                    <option value="0">あり</option>
+                    <option value="1">なし</option>
+                </select>
+                </tr>
+        </tbody>
+        <input type="hidden" name="errorHappens" value="false">
+    </table><!--フォーム終わり-->
+<div id="errorLocation"></div>
+<center>
+<input type="submit" value="チェック">　<BUTTON type="reset">初期値に戻す</BUTTON>
+</center>
+
+<style type="text/css">
+    
+    .sensor_basic_0 {
+        color: black;
+        background-color: #D0E9FF;
+    }
+    
+</style>
+
+<script>
+    function sensor_basic_check(){
+
+        var errorHappens = document.sensor_basic_form.errorHappens.value;
+        var parent = document.getElementById("errorLocation");
+        
+        if( errorHappens == "true" ){
+            var child = document.getElementById("slave_error");
+            parent.removeChild(child);
+        }
+
+/*
+        var port = document.sensor_basic_form.port.value;
+        document.write(port);
+*/
+        var slave = document.sensor_basic_form.slave.value;
+        if( slave == 0){
+            var element = document.createElement('div');
+            element.id = "slave_error";
+            element.innerHTML = "スレーブアドレスを入力してください";
+            element.style.backgroundColor = 'red';
+            element.style.color = 'white';
+            
+            document.getElementById("slave_title").style.backgroundColor = "#FDBBC5";
+            
+            parent.appendChild(element);
+            document.sensor_basic_form.errorHappens.value = "true";
+        }
+
+/*
+        var bitSize = document.sensor_basic_form.bitSize[0].checked;
+        if( bitSize == true ){
+            document.write("ビットサイズは、7bitです。");
+        }else{
+            document.write("ビットサイズは、8ビットです。");
+        }
+ */
+/*
+        var init = document.sensor_basic_form.init.value;
+        if( init == 0 ){
+            document.write("初期化は必要");
+        }else if( init == 1 ){
+            document.write("初期化は不必要");
+        }
+*/
+/*
+        var eeprom = document.sensor_basic_form.eeprom.value;
+        if( eeprom == 0 ){
+                document.write("内部レジスタあり");
+        }else if( eeprom == 1 ){
+                document.write("内部レジスタなし");
+        }
+*/
+    }
+</script>
+
+</body>
+</html>
