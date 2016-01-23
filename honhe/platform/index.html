@@ -1066,11 +1066,11 @@ function inputInfo_check(){
     getsensor_main = getsensor_main + getsensor_name;
     
     //読み込みデータ格納用の宣言
-    getsensor_main = getsensor_main + "\n" + space + "unsigned char readData[256];";
+    getsensor_main = getsensor_main + "\n" + space + "unsigned char readData[100];";
     
     //データ整形，換算用の宣言
-    getsensor_main = getsensor_main + "\n" + space + "unsigned short ReadData[256];";
-    getsensor_main = getsensor_main + "\n" + space + "int ShapedData[256];";
+    getsensor_main = getsensor_main + "\n" + space + "unsigned short ReadData[100];";
+    getsensor_main = getsensor_main + "\n" + space + "int ShapedData[100];";
     getsensor_main = getsensor_main + "\n" + space + "int is_signed;";
     getsensor_main = getsensor_main + "\n" + space + "int i,j;";
     getsensor_main = getsensor_main + "\n" + space + "int DataSize;";
@@ -1190,7 +1190,8 @@ function inputInfo_check(){
         getsensor_main = getsensor_main + "\n" + space + "}";
     }else{
         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
-        getsensor_main = getsensor_main + "\n" + space + space_half + "OutputData[i] = " + "ShapedData[i]" + ";";
+        getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData[ = " + "ShapedData[i]" + ";";
+        getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData++;";
         getsensor_main = getsensor_main + "\n" + space + "}";
     }
     
