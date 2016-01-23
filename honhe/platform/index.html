@@ -242,7 +242,7 @@
     <table border="1" bordercolor="gray" cellpadding="5" width="100%" style="border-collapse: collapse;">
         <tbody>
             <tr>
-                <td class="sensor_basic_0" height="55" width="35%"><span style="float:left; font-weight:bold;">データ長、符号</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span>
+                <td class="sensor_basic_0" height="55" width="35%"><span style="float:left; font-weight:bold;">取得データの情報</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span>
                 </td>
                 <td style="padding-left:10px;" id="slave_title">
                     <input type="checkbox" name="inputInfo_signed" value="1"><span style="font-size:12px;">符号付き</span></br>
@@ -266,7 +266,11 @@
                     </td>
                     <td style="padding-left:10px;" id="slave_title">
                         <span style="font-size:12px;">（"data"を元データとして換算式を記入してください。）</span></br>
-                        <span style="font-size:12px;">センサ値 = </span><input type="text" style="height:20px; width:80%; padding-bottom:5px;" placeholder="例：(data+128)/4">
+                        <span style="font-size:12px;">センサ値 = </span><input type="text" style="height:20px; width:80%; padding-bottom:5px;" placeholder="例：(data+128)/4" id="conversion"></br>
+                            <span style="font-size:12px;">センサ値の型：</span><select id="int_or_float">
+                                <option value="0">整数型</option>
+                                <option value="1">実数型</option>
+                            </select>
                     </td>
                 </tr>
             </tbody>
@@ -295,7 +299,7 @@
         <!--初期化関数の表示-->
         <div id="init_generated_form" style="display:none;">
                 <div class="generate_subtitle">初期化関数</div>
-                <textarea readOnly cols="50" rows="25" id="init_generated" class="init_generated"></textarea>
+                <textarea readOnly cols="50" rows="10" id="init_generated" class="init_generated"></textarea>
                 </br>
                 </br>
         </div>
@@ -975,10 +979,11 @@ function inputInfo_check(){
     var signed = document.getElementsByName("inputInfo_signed")[0].checked;//符号、trueで符号付き
     var data_length = document.getElementById("inputInfo_length").value;//データ長
     var num_block = document.getElementById("readbyte_getsensor_eeprom").value;//読み込んだバイト数
-    var num_data = Math.floor( (num_block*8)/data_length );//利用するデータ数
+    var num_data = Math.floor( num_block / (Math.ceil(data_length/8)) );//利用するデータ数
     if( num_data > num_block ){
         num_data = num_block;
     }
+    
     
     console.log("符号："+signed);
     console.log("データ長："+data_length);
@@ -1020,18 +1025,19 @@ function inputInfo_check(){
     /*----------------- 初期化関数の自動生成 -----------------*/
     /* 初期化に必要な情報の整理 */
     var space = "\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020";//インデント用
+    var space_half = "\u0020\u0020\u0020\u0020\u0020\u0020";//インデント用
     /* 書き込む文字列の準備 */
     //母体
     var init_main = "";
     //関数名(1行目)
-    var init_name = "void " + sensorName + "_init()\n{"
+    var init_name = "void " + sensorName + "_init(int port)\n{"
     init_main = init_main + init_name;
     //初期設定コマンド(2行目以降)
     var num_initCommand = parseInt(document.getElementById("count_init_eeprom").value,10) + 1;//コマンドの要素数
     for(var i=0;i<num_initCommand;i++){
         //初期設定コマンドの追加
         init_main = init_main + "\n" + space + "/* 初期設定コマンド" + (i+1) + " */\n";
-        init_main = init_main + space + "Write_Command_E(" + port + ",0x" + slave + ",0x" + (document.getElementsByName("subadr_init_eeprom")[i].value).toUpperCase() + ",0x" + (document.getElementsByName("data_init_eeprom")[i].value).toUpperCase() + ");\n";
+        init_main = init_main + space + "Write_Command_E(" + "port" + ",0x" + slave + ",0x" + (document.getElementsByName("subadr_init_eeprom")[i].value).toUpperCase() + ",0x" + (document.getElementsByName("data_init_eeprom")[i].value).toUpperCase() + ");\n";
         //待機時間の追加
         if(document.getElementsByName("wait_init_eeprom")[i].value != "" && document.getElementsByName("wait_init_eeprom")[i].value != "0"){
             init_main = init_main + space + "delay_ms(" + document.getElementsByName("wait_init_eeprom")[i].value + ");\n";
@@ -1048,15 +1054,39 @@ function inputInfo_check(){
     var getsensor_main = "";
     
     //関数名(1行目)
-    var getsensor_name = "void " + sensorName + "_get(" + "uint8_t" + "\u0020" + "*" + "\u0020" + "readData" + ")\n{";
+    /*整数か実数か*/
+    var int_or_float;
+    if(document.getElementById("int_or_float").value == "0"){
+        int_or_float = "int";
+    }else{
+        int_or_float = "float";
+    }
+    /*書き込み*/
+    var getsensor_name = "void " + sensorName + "_get(" + "int port," + int_or_float + "\u0020" + "*" + "\u0020" + "OutputData" + ")\n{";
     getsensor_main = getsensor_main + getsensor_name;
     
-    //測定コマンド（あれば）(2行目以降)
+    //読み込みデータ格納用の宣言
+    getsensor_main = getsensor_main + "\n" + space + "unsigned char readData[256];";
+    
+    //データ整形，換算用の宣言
+    getsensor_main = getsensor_main + "\n" + space + "unsigned short ReadData[256];";
+    getsensor_main = getsensor_main + "\n" + space + "int ShapedData[256];";
+    getsensor_main = getsensor_main + "\n" + space + "int is_signed;";
+    getsensor_main = getsensor_main + "\n" + space + "int i,j;";
+    getsensor_main = getsensor_main + "\n" + space + "int DataSize;";
+    getsensor_main = getsensor_main + "\n" + space + "int DataCount;";
+    getsensor_main = getsensor_main + "\n" + space + "int amari_bit;";
+    getsensor_main = getsensor_main + "\n" + space + "int max_of_byte;";
+    getsensor_main = getsensor_main + "\n" + space + "int a=1;";
+    getsensor_main = getsensor_main + "\n";
+    
+    
+    //測定コマンド（あれば）(3行目以降)
      var num_getsensorCommand = parseInt(document.getElementById("count_getsensor_eeprom").value,10);//コマンドの要素数
      for(var i=1;i<=num_getsensorCommand;i++){
          getsensor_main = getsensor_main + "\n" + space + "/* 測定コマンド" + i + " */\n";
          //測定コマンドの追加
-         getsensor_main = getsensor_main + space + "Write_Command_E(" + port + ",0x" + slave + ",0x" + (document.getElementsByName("subadr_getsensor_eeprom")[i].value).toUpperCase() + ",0x" + (document.getElementsByName("data_getsensor_eeprom")[i].value).toUpperCase() + ");\n";
+         getsensor_main = getsensor_main + space + "Write_Command_E(" + "port" + ",0x" + slave + ",0x" + (document.getElementsByName("subadr_getsensor_eeprom")[i].value).toUpperCase() + ",0x" + (document.getElementsByName("data_getsensor_eeprom")[i].value).toUpperCase() + ");\n";
          //待機時間の追加
          if(document.getElementsByName("wait_getsensor_eeprom")[i].value != "" && document.getElementsByName("wait_getsensor_eeprom")[i].value != "0"){
              getsensor_main = getsensor_main + space + "delay_ms(" + document.getElementsByName("wait_getsensor_eeprom")[i].value + ");\n";
@@ -1065,7 +1095,7 @@ function inputInfo_check(){
      
      //読み込みコマンド
      getsensor_main = getsensor_main + "\n" + space + "/* 読み込みコマンド" + " */\n";
-     getsensor_main = getsensor_main + space + "Read_Command_E(" + port + ",0x" + slave + ",0x" + (document.getElementById("subadr_read_getsensor_eeprom").value).toUpperCase() + ",readData" + "," + (document.getElementById("readbyte_getsensor_eeprom").value).toUpperCase() + ");\n";
+     getsensor_main = getsensor_main + space + "Read_Command_E(" + "port" + ",0x" + slave + ",0x" + (document.getElementById("subadr_read_getsensor_eeprom").value).toUpperCase() + ",readData" + "," + (document.getElementById("readbyte_getsensor_eeprom").value).toUpperCase() + ");\n";
      
      /*--------- データの整形 ---------*/
      /* データ数で分ける */
@@ -1083,12 +1113,85 @@ function inputInfo_check(){
      //余りビット数を計算
      var remainder = (byte_per_data*8)-data_length;
      
+     var is_signed;
+     if(document.getElementsByName("inputInfo_signed")[0].checked == true){
+         is_signed = "1";//符号付きなら1に
+     }else{
+         is_signed = "0";//符号無しなら0に
+     }
+     
      console.log("データ数:"+num_data);
      console.log("データあたりのバイト数:"+byte_per_data);
      console.log("余りビット数:"+remainder);
-     
+     console.log("符号付き:"+is_signed);
+
+/*--------- データの整形を書き込み(宣言は上で書き込み済み)(8bit単位か16bit単位かで分ける) ---------*/
+     if(byte_per_data == "1"){//データが8bit領域だったら
+         getsensor_main = getsensor_main + "\n" + space + "/*---- 取得データの整形 ----*/";
+         getsensor_main = getsensor_main + "\n" + space + "is_signed = " + is_signed + ";";
+         getsensor_main = getsensor_main + "\n" + space + "DataSize = " + data_length + ";";
+         getsensor_main = getsensor_main + "\n" + space + "DataCount = " + num_data + ";";
+         getsensor_main = getsensor_main + "\n" + space + "amari_bit = 8 - DataSize;\n";
+         getsensor_main = getsensor_main + "\n" + space + "/* データサイズの最大値を求める */";
+         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataSize;i++){";
+         getsensor_main = getsensor_main + "\n" + space + space_half + "a = a*2;";
+         getsensor_main = getsensor_main + "\n" + space + "}";
+         getsensor_main = getsensor_main + "\n" + space + "max_of_byte = a-1;\n";
+         getsensor_main = getsensor_main + "\n" + space + "/* 整形,指定bitのデータに */";
+         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
+         getsensor_main = getsensor_main + "\n" + space + space_half +"ReadData[i] = readData[i]>>amari_bit;";
+         getsensor_main = getsensor_main + "\n" + space + "}";
+         getsensor_main = getsensor_main + "\n" + space + "/* 正負の変換 */";
+         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
+         getsensor_main = getsensor_main + "\n" + space + space_half +"if(is_signed == 1){";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half + "/* もし符号付きデータなら変換して格納する */";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half + "ShapedData[i] = ReadData[i] - (max_of_byte+1);";
+         getsensor_main = getsensor_main + "\n" + space + space_half +"}else{";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half +"/* 符号なしデータならそのまま格納する */";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half + "ShapedData[i] = ReadData[i];";
+         getsensor_main = getsensor_main + "\n" + space + space_half + "}";
+         getsensor_main = getsensor_main + "\n" + space + "}";
+
+
+     }else if(byte_per_data == "2"){//データが16bit領域だったら
+         getsensor_main = getsensor_main + "\n" + space + "/*---- 取得データの整形 ----*/";
+         getsensor_main = getsensor_main + "\n" + space + "is_signed = " + is_signed + ";";
+         getsensor_main = getsensor_main + "\n" + space + "DataSize = " + data_length + ";";
+         getsensor_main = getsensor_main + "\n" + space + "DataCount = " + num_data + ";";
+         getsensor_main = getsensor_main + "\n" + space + "amari_bit = 16 - DataSize;\n";
+         getsensor_main = getsensor_main + "\n" + space + "/* データサイズの最大値を求める */";
+         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataSize;i++){";
+         getsensor_main = getsensor_main + "\n" + space + space_half + "a = a*2;";
+         getsensor_main = getsensor_main + "\n" + space + "}";
+         getsensor_main = getsensor_main + "\n" + space + "max_of_byte = a-1;\n";
+         getsensor_main = getsensor_main + "\n" + space + "/* 整形,指定bitのデータに */";
+         getsensor_main = getsensor_main + "\n" + space + "for(i=0,j=0;i<DataCount;i++,j=j+2){";
+         getsensor_main = getsensor_main + "\n" + space + space_half +"ReadData[i] = (readData[j]<<8 | readData[j+1])>>amari_bit;";
+         getsensor_main = getsensor_main + "\n" + space + "}";
+         getsensor_main = getsensor_main + "\n" + space + "/* 正負の変換 */";
+         getsensor_main = getsensor_main + "\n" + space + "for(i=0,j=0;i<DataCount;i++,j=j+2){";
+         getsensor_main = getsensor_main + "\n" + space + space_half +"if(is_signed == 1){";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half + "/* もし符号付きデータなら変換して格納する */";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half + "ShapedData[i] = ReadData[i] - (max_of_byte+1);";
+         getsensor_main = getsensor_main + "\n" + space + space_half +"}else{";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half +"/* 符号なしデータならそのまま格納する */";
+         getsensor_main = getsensor_main + "\n" + space + space_half + space_half + "ShapedData[i] = ReadData[i];";
+         getsensor_main = getsensor_main + "\n" + space + space_half + "}";
+         getsensor_main = getsensor_main + "\n" + space + "}";
+     }
+/*--------- データの換算式が必要なら換算式を書き込み ---------*/
+    if( document.getElementById("conversion").value != "" ){
+        var conversion = document.getElementById("conversion").value;
+        conversion = conversion.replace(/data/g,"ShapedData[i]");
+        
+        getsensor_main = getsensor_main + "\n" + space + "/*---- 取得データの換算 ----*/";
+        getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
+        getsensor_main = getsensor_main + "\n" + space + space_half + "OutputData[i] = " + conversion + ";";
+        getsensor_main = getsensor_main + "\n" + space + "}";
+    }
+
     /* センサ値取得関数フォームに書き込み */
-    document.getElementById("getsensor_generated").value = getsensor_main + "}\n";
+    document.getElementById("getsensor_generated").value = getsensor_main + "\n}\n";
 
 }
 
@@ -1182,11 +1285,11 @@ $(function() {
 }
 .init_generated {
     width:90%;
-    font-size:15px;
+    font-size:13px;
 }
 .getsensor_generated {
     width:90%;
-    font-size:15px;
+    font-size:13px;
 }
 .generate_subtitle {
     width:180px;
