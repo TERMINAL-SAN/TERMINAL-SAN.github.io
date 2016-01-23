@@ -1190,7 +1190,7 @@ function inputInfo_check(){
         getsensor_main = getsensor_main + "\n" + space + "}";
     }else{
         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
-        getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData[ = " + "ShapedData[i]" + ";";
+        getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData = " + "ShapedData[i]" + ";";
         getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData++;";
         getsensor_main = getsensor_main + "\n" + space + "}";
     }
