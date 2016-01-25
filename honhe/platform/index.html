@@ -32,7 +32,7 @@
                     <div id="sensorNameError" style="width:280px; background-color:red; color:white; font-size:12px; display:none;">ERROR! センサ名を入力してください。</div>
                 </td>
             </tr>
-            <tr>
+            <tr style="display:none;">
                 <td class="sensor_basic_0" height="55"><span style="float:left; font-weight:bold;">使用ポート番号</span><span style="float:right; background-color:gray; color:white; padding:3px 5px; font-size:12px;">必須</span></td>
                 <td style="padding-left:10px;"><select id="port">
                     <option value="0">0</option>
@@ -1186,7 +1186,8 @@ function inputInfo_check(){
         
         getsensor_main = getsensor_main + "\n" + space + "/*---- 取得データの換算 ----*/";
         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
-        getsensor_main = getsensor_main + "\n" + space + space_half + "OutputData[i] = " + conversion + ";";
+        getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData = " + conversion + ";";
+        getsensor_main = getsensor_main + "\n" + space + space_half + "*OutputData++;";
         getsensor_main = getsensor_main + "\n" + space + "}";
     }else{
         getsensor_main = getsensor_main + "\n" + space + "for(i=0;i<DataCount;i++){";
